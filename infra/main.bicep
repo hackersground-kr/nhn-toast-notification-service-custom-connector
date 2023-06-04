@@ -92,14 +92,6 @@ resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
 
 var apps = [
   {
-    name: 'SENDERS'
-    suffix: 'senders'
-  }
-  {
-    name: 'SMS'
-    suffix: 'sms'
-  }
-  {
     name: 'MMS'
     suffix: 'mms'
   }
