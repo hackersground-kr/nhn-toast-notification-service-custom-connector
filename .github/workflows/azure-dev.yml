@@ -51,13 +51,13 @@ jobs:
     - name: Publish artifact
       shell: bash
       run: |
-        dotnet publish src\nt-mms -c Release
+        dotnet publish src/nt-mms/NhnToast.Mms.csproj -c Release
 
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
         name: nt-mms
-        path: src\nt-mms/bin/Release/net6.0/publish
+        path: src/nt-mms/bin/Release/net6.0/publish
 
   deploy-dev:
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
