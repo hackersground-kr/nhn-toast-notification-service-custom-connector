@@ -118,6 +118,21 @@ jobs:
           --named-value-id "X_FUNCTIONS_KEY_MMS" \
           --value $functionKey)
 
+    - name: Update APIM named value with NNH Cloud API Key
+      shell: bash
+      run: |
+        updated=$(az apim nv update \
+          -g ${{ env.AZURE_RESOURCE_GROUP }} \
+          -n ${{ env.AZURE_APIM_NAME }} \
+          --named-value-id "X_TOAST_APP_KEY" \
+          --value ${{ secrets.TOAST_APP_KEY}})
+
+        updated=$(az apim nv update \
+          -g ${{ env.AZURE_RESOURCE_GROUP }} \
+          -n ${{ env.AZURE_APIM_NAME }} \
+          --named-value-id "X_TOAST_APP_SECRET" \
+          --value ${{ secrets.TOAST_APP_SECRET}})
+
   deploy-prod:
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     name: Deploy to Prod
@@ -176,3 +191,18 @@ jobs:
           -n ${{ env.AZURE_APIM_NAME }} \
           --named-value-id "X_FUNCTIONS_KEY_MMS" \
           --value $functionKey)
+
+    - name: Update APIM named value with NNH Cloud API Key
+      shell: bash
+      run: |
+        updated=$(az apim nv update \
+          -g ${{ env.AZURE_RESOURCE_GROUP }} \
+          -n ${{ env.AZURE_APIM_NAME }} \
+          --named-value-id "X_TOAST_APP_KEY" \
+          --value ${{ secrets.TOAST_APP_KEY}})
+
+        updated=$(az apim nv update \
+          -g ${{ env.AZURE_RESOURCE_GROUP }} \
+          -n ${{ env.AZURE_APIM_NAME }} \
+          --named-value-id "X_TOAST_APP_SECRET" \
+          --value ${{ secrets.TOAST_APP_SECRET}})
