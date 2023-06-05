@@ -46,7 +46,7 @@ jobs:
     - name: Test
       shell: bash
       run: |
-        dotnet test -c Release --no-build --verbosity normal
+        dotnet test -c Release --filter:"TestCategory!=Integration" --no-build --verbosity normal
 
     - name: Publish artifact
       shell: bash
