@@ -104,6 +104,24 @@ jobs:
         app-name: ${{ env.AZURE_FUNCTION_APP_NAME }}
         package: artifact/fncapp.zip
 
+    - name: Update function app settings
+      shell: bash
+      run: |
+        appsettings_url="https://raw.githubusercontent.com/hackersground-kr/nhn-toast-notification-service-custom-connector/hg/infra/appsettings-mms.json"
+        appsettings=$(curl $appsettings_url)
+        appsettings_length=$(echo $appsettings | jq '. | length')
+
+        for (( i=0; i<$appsettings_length; i++ ))
+        do
+            appsettings_name=$(echo $appsettings | jq --arg i "$i" '.[$i|fromjson].name' -r)
+            appsettings_value=$(echo $appsettings | jq --arg i "$i" '.[$i|fromjson].value' -r)
+    
+            appsettings_updated=$(az functionapp config appsettings set \
+              -g ${{ env.AZURE_RESOURCE_GROUP }} \
+              -n ${{ env.AZURE_FUNCTION_APP_NAME }} \
+              --settings $appsettings_name="$appsettings_value")
+        done
+
     - name: Update APIM named value with function key
       shell: bash
       run: |
@@ -147,7 +165,7 @@ jobs:
     env:
       AZURE_RESOURCE_GROUP: "rg-${{ vars.AZURE_ENV_NAME }}-${{ vars.AZURE_ENV_INFRA }}-${{ vars.AZURE_LOCATION_CODE }}"
       AZURE_APIM_NAME: "apim-${{ vars.AZURE_ENV_NAME }}-${{ vars.AZURE_ENV_INFRA }}-${{ vars.AZURE_LOCATION_CODE }}"
-      AZURE_FUNCTION_APP_NAME: "fncapp-${{ vars.AZURE_ENV_NAME }}-md2html-${{ vars.AZURE_ENV_INFRA }}-${{ vars.AZURE_LOCATION_CODE }}"
+      AZURE_FUNCTION_APP_NAME: "fncapp-${{ vars.AZURE_ENV_NAME }}-mms-${{ vars.AZURE_ENV_INFRA }}-${{ vars.AZURE_LOCATION_CODE }}"
 
     steps:
     - name: Download artifact
@@ -177,6 +195,24 @@ jobs:
       with:
         app-name: ${{ env.AZURE_FUNCTION_APP_NAME }}
         package: artifact/fncapp.zip
+
+    - name: Update function app settings
+      shell: bash
+      run: |
+        appsettings_url="https://raw.githubusercontent.com/hackersground-kr/nhn-toast-notification-service-custom-connector/hg/infra/appsettings-mms.json"
+        appsettings=$(curl $appsettings_url)
+        appsettings_length=$(echo $appsettings | jq '. | length')
+
+        for (( i=0; i<$appsettings_length; i++ ))
+        do
+            appsettings_name=$(echo $appsettings | jq --arg i "$i" '.[$i|fromjson].name' -r)
+            appsettings_value=$(echo $appsettings | jq --arg i "$i" '.[$i|fromjson].value' -r)
+    
+            appsettings_updated=$(az functionapp config appsettings set \
+              -g ${{ env.AZURE_RESOURCE_GROUP }} \
+              -n ${{ env.AZURE_FUNCTION_APP_NAME }} \
+              --settings $appsettings_name="$appsettings_value")
+        done
 
     - name: Update APIM named value with function key
       shell: bash
